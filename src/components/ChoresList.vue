@@ -1,6 +1,6 @@
 <template>
   <div>
-		<BaseInputText
+		<input
 			v-model="newChoreText"
 			placeholder="New Chore"
 			@keydown.enter="addChore"
@@ -20,50 +20,49 @@
 </template>
 
 <script lang="ts">
-import BaseInputText from './BaseInputText.vue'
+import Vue from "vue"
 import Chore from './Chore.vue'
-import Vue from 'vue'
-
-let nextChoreId = 1
+import { db } from './firebaseInit'
 
 export default Vue.extend({
   components: {
-		BaseInputText, Chore
+		Chore
   },
-  data () {
-    return {
+  data() {
+		return {
 			newChoreText: '',
-      chores: [
-				{
-					id: nextChoreId++,
-					text: 'Learn Vue'
-				},
-				{
-					id: nextChoreId++,
-					text: 'Learn about single-file components'
-				},
-				{
-					id: nextChoreId++,
-					text: 'Fall in love'
-				}
-			]
-    }
+			chores: [] as any[]
+		}
 	},
+	// firestore() {
+	// 	return {
+	// 		chores: db.collection('chores').orderBy('createdAt')
+	// 	}
+  // },
+	created () {
+		db.collection('chores').get().then((querySnapshot) => {
+        querySnapshot.forEach((chore) => {
+          let data = {
+						'id': chore.id,
+						'name': chore.data().name,
+            'description': chore.data().description
+          }
+          this.chores.push(data)
+        })
+      })
+  },
 	methods: {
 		addChore () {
-			const trimmedText = this.newChoreText.trim()
-			if (trimmedText) {
-				this.chores.push({
-					id: nextChoreId++,
-					text: trimmedText
-				})
+			const name = this.newChoreText.trim();
+			const description = '';
+			if (name) {
+				const createdAt = new Date()
+				db.collection('chores').add({ createdAt, description, name })
 				this.newChoreText = '';
 			}
 		},
-		removeChore (idToRemove) {
-			this.chores = this.chores.filter(chore => {
-				return chore.id !== idToRemove
-			})
+		removeChore (idToRemove: string) {
+			db.collection('chores').doc(idToRemove).delete()
 		}
 	}
 })

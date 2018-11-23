@@ -1,22 +1,23 @@
 <template>
   <div id="app">
-    <h1>My Chores App!</h1>
+    <img alt="Vue logo" src="./assets/logo.png">
     <ChoresList/>
   </div>
 </template>
 
-<script>
-import ChoresList from './components/ChoresList.vue'
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
+import ChoresList from "./components/ChoresList.vue"
 
-export default {
-  name: 'app',
+@Component({
   components: {
-    ChoresList
-  }
-}
+    ChoresList,
+  },
+})
+export default class App extends Vue {}
 </script>
 
-<style>
+<style lang="scss">
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
