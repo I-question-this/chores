@@ -1,10 +1,16 @@
 <template>
   <div>
-		<input
-			v-model="newChoreText"
-			placeholder="New Chore"
-			@keydown.enter="addChore"
-		/>
+		<form@keydown.enter="addChore">
+			<input
+			v-model="newChoreName"
+			placeholder="New Chore Name"
+			/>
+			<input
+			v-model="newChoreDescription"
+			placeholder="New Chore Description (Optional)"
+			/>
+		</form>
+		
 		<ul v-if="chores.length">
 			<Chore
 				v-for="chore in chores"
@@ -30,7 +36,8 @@ export default Vue.extend({
   },
   data() {
 		return {
-			newChoreText: '',
+			newChoreName: '',
+			newChoreDescription: '',
 			chores: [] as any[]
 		}
 	},
@@ -41,12 +48,13 @@ export default Vue.extend({
   },
 	methods: {
 		addChore () {
-			const name = this.newChoreText.trim();
-			const description = '';
+			const name = this.newChoreName.trim();
+			const description = this.newChoreDescription.trim();
 			if (name) {
 				const createdAt = new Date()
 				db.collection('chores').add({ createdAt, description, name })
-				this.newChoreText = '';
+				this.newChoreName = ''
+				this.newChoreDescription = '';
 			}
 		},
 		removeChore (idToRemove: string) {
