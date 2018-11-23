@@ -34,22 +34,10 @@ export default Vue.extend({
 			chores: [] as any[]
 		}
 	},
-	// firestore() {
-	// 	return {
-	// 		chores: db.collection('chores').orderBy('createdAt')
-	// 	}
-  // },
-	created () {
-		db.collection('chores').get().then((querySnapshot) => {
-        querySnapshot.forEach((chore) => {
-          let data = {
-						'id': chore.id,
-						'name': chore.data().name,
-            'description': chore.data().description
-          }
-          this.chores.push(data)
-        })
-      })
+	firestore() {
+		return {
+			chores: db.collection('chores')
+		}
   },
 	methods: {
 		addChore () {
