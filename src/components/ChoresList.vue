@@ -28,7 +28,7 @@
 <script lang="ts">
 import Vue from "vue"
 import Chore from './Chore.vue'
-import { db } from './firebaseInit'
+import { db } from '../helpers/firebaseInit'
 
 export default Vue.extend({
   components: {
