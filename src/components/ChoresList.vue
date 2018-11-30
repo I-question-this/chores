@@ -1,6 +1,6 @@
 <template>
   <div>
-		<form@keydown.enter="addChore">
+		<form @keydown.enter="addChore">
 			<input
 			v-model="newChoreName"
 			placeholder="New Chore Name"
